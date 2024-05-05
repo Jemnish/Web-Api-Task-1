@@ -30,10 +30,10 @@ const createAppointment = async (req, res) => {
         await newAppointment.save();
 
         // Send the response to the user
-        res.status(200).json({ success: true, message: "Booking confirmed." });
+        res.json({ success: true, message: "Booking confirmed." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error." });
+        res.json({ success: false, message: "Internal server error." });
     }
 };
 
