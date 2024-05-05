@@ -1,4 +1,3 @@
-const e = require('express');
 const reservationModel = require('../models/userReservationModel')
 
 

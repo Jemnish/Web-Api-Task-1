@@ -1,4 +1,3 @@
-const express = require('express');
 const appointmentModel = require('../models/appointmentModel');
 
 const createAppointment = async (req, res) => {
