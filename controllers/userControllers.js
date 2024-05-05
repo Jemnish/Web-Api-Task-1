@@ -18,48 +18,53 @@ const createUser = async (req, res) => {
             "sucess": false,
             "message": "Please enter all the fields!!"
         });
+    } else if (typeof name !== 'string' || typeof phone !== 'string' || typeof email !== 'string'){
+        return res.json({
+            "sucess": false,
+            "message": "Please enter valid details in the fields!!"
+        });
     }
 
-    // 4. Error handling (Try Catch)
-    try {
-        // 5. Check if the user is already registered
-        const existingUser = await userModel.findOne({
-            phone: phone
-        });
-        // 5.1. If user found: Send response user already exist
-        // 5.1.1. Stop the process
-        if (existingUser) {
-            // return is used to end the process
-            return res.json({
-                "status": false,
-                "message": "User already exists!!!"
+        // 4. Error handling (Try Catch)
+        try {
+            // 5. Check if the user is already registered
+            const existingUser = await userModel.findOne({
+                phone: phone
+            });
+            // 5.1. If user found: Send response user already exist
+            // 5.1.1. Stop the process
+            if (existingUser) {
+                // return is used to end the process
+                return res.json({
+                    "status": false,
+                    "message": "User already exists!!!"
+                })
+            }
+
+
+            // 5.2. If user is new
+            const newUser = new userModel({
+                // Database Fields : Client's Value
+                name: name,
+                phone: phone,
+                email: email,
+            })
+            // 5.3. Save to the database
+            await newUser.save();
+
+            // 5.4. Send the response to the user
+            res.json({
+                "sucess": true,
+                "message": "User created sucessfully"
+            });
+
+        } catch (error) {
+            console.log(error);
+            res.json({
+                "success": "false",
+                "message": "Internal serval error"
             })
         }
-
-
-        // 5.2. If user is new
-        const newUser = new userModel({
-            // Database Fields : Client's Value
-            name: name,
-            phone: phone,
-            email: email,
-        })
-        // 5.3. Save to the database
-        await newUser.save();
-
-        // 5.4. Send the response to the user
-        res.json({
-            "sucess": true,
-            "message": "User created sucessfully"
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.json({
-            "success": "false",
-            "message": "Internal serval error"
-        })
-    }
 }
 
 module.exports = { createUser }
